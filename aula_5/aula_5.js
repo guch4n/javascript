@@ -61,7 +61,40 @@ async function apagarProduto(id) {
 }
 
 async function criarProduto() {
-    
+    const produto = { //pega os dados dos campos nome, preco e quantidade
+        nome: document.querySelector("#nome").value,
+        preco: document.querySelector("#preco").value,
+        quantidade: document.querySelector("#quantidade").value
+    }
+
+    try {
+        await fetch(API_URL, { //envia para a API, padrão para metodos POST
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(produto)
+        });
+        limparFormulario();
+        fecharModal();
+        buscarProdutos();
+    } catch (error) {
+        alert("Não foi possivel adicionar o produto");
+    }
+
+
+}
+
+function limparFormulario(){
+    document.querySelector("#nome").value = "",
+    document.querySelector("#preco").value = "",
+    document.querySelector("#quantidade").value = ""
+}
+
+function fecharModal(){ //obrigatorio fazer essa solicitação toda vez que for abrir e fechar um modal
+    const modalHtml = document.querySelector("#modalProduto");
+    const modal = bootstrap.Modal.getOrCreateInstance(modalHtml);
+    modal.hide();
 }
 
 async function atualizarProduto(id) {
